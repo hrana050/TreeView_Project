@@ -1,0 +1,33 @@
+https://www.geeksforgeeks.org/working-on-git-bash/
+
+https://stackoverflow.com/questions/60719964/creating-dynamic-dependent-drop-down-from-database-in-django
+
+https://www.coder.work/article/511266
+
+https://www.c-sharpcorner.com/article/quiz-application-with-asp-net-mvc-5/
+;with cte as 
+(
+	select sno,candidate, father,mobile,[email ID],
+		row_number() OVER (PARTITION BY [email ID] ORDER BY [email ID], [email ID]) as rn,
+		row_number() OVER (PARTITION BY mobile ORDER BY mobile, mobile) as rn_1
+	from data1$
+)
+select sno,candidate, father, case when rn = 1 then [email ID] else null end as Emailid,
+case when rn_1 = 1 then [mobile] else null end as mobile
+from cte where [email ID] is not null
+
+
+https://www.youtube.com/watch?v=2Rvf2lk1U-c
+
+https://www.youtube.com/watch?v=VBMoxeXbO60
+
+https://www.youtube.com/watch?v=-FbRu0akVIw
+
+https://www.youtube.com/watch?v=LIR3kXUts3Q&list=PLp55XiVzZ1_iUYan9C3NsWhdkw4Gbnovx&index=4
+
+https://www.youtube.com/watch?v=XVv6mJpFOb0
+
+
+https://www.youtube.com/watch?v=Ewgy-G9cmbg
+
+https://www.youtube.com/watch?v=RhEjmHeDNoA

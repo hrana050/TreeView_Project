@@ -1,0 +1,167 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage_MasterPage" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>KR. Mangalam</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+  <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css" />
+  <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+  <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css" />
+
+    <link href="../css/style.css" rel="stylesheet" />
+     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+ <script>
+
+     $('document').ready(function () {
+         $('body').on('click', '.nav-item a', function () {
+             var a = "hello";
+             var i = $('.nav-item a').index(this);
+             sessionStorage.setItem("aindex", i);
+         });
+
+         var i = sessionStorage.getItem("aindex");
+         if (i != null) {
+             var anchorelement = $(".nav-item a").eq(i);
+             $(anchorelement).parentsUntil("ul.nav-item", "ul").addClass("menu-open active").css("display", "block");
+             $(anchorelement).parentsUntil("ul.nav-item", "li").addClass("active");
+         }
+         else {
+             $("ul.nav-item li").eq(1).addClass("active");
+         }
+
+         $('body').on('click', '.signout', function () {
+             sessionStorage.removeItem("aindex");
+         });
+     });
+
+</script>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <form id="form1" runat="server">
+             <asp:ScriptManager ID="sp1" runat="server"></asp:ScriptManager>
+<div class="wrapper">
+     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+   
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+      <li class="nav-item">
+        <asp:Label ID="lblLastLogin" runat="server" Font-Size="15px" Font-Bold="true" ForeColor="Red"></asp:Label>
+       
+      </li>
+          <li class="nav-item">
+       
+       
+      </li>
+    </ul>
+  </nav>
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="index3.html" class="brand-link">
+      <img src="../Img/KRMULogo_w.svg" alt="Logo" class="brand-image elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">KRM</span>
+    </a>
+    <div class="sidebar">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info">
+          <a href="#" class="d-block">  <asp:Label ID="lblUser" runat="server" Font-Size="16px" Font-Bold="true" ForeColor="#ffc107"></asp:Label></a>
+        </div>
+      </div>
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item menu-open">
+            <a href="../Home/Home.aspx" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+                      <li class="nav-item">
+            <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-cogs"></i>
+              <p>
+                Master
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="../Setup/Createuser.aspx" class="nav-link">
+                  <i class="fas fa-user nav-icon"></i>
+                  <p>Manage user</p>
+                </a>
+              </li>
+                <li class="nav-item">
+                <a href="../Setup/Usermap.aspx" class="nav-link">
+                  <i class="fas fa-link nav-icon"></i>
+                  <p>Manage User Map</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../Setup/manageyear.aspx" class="nav-link">
+                  <i class="fas fa-calendar nav-icon"></i>
+                  <p>Manage Year</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../Setup/level.aspx" class="nav-link">
+                  <i class="fas fa-plus nav-icon" aria-hidden="true"></i>
+                  <p>Manage Level</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../Setup/levelmap.aspx" class="nav-link">
+                  <i class="fas fa-link nav-icon" aria-hidden="true"></i>
+                  <p>Level map</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../Setup/UploadedFile.aspx" class="nav-link">
+                    <i class="fas fa-file nav-icon"></i>
+                  <p>File Structure</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+             <li class="nav-item" style="background-color:#901a1a">
+             <asp:LinkButton ID="lnklogout" runat="server" class="nav-link" Text="LogOut" OnClick="lnklogout_Click"><i class="nav-icon fas fa-lock"></i> Log Out</asp:LinkButton>
+           
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+    <div class="content-wrapper">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+        </div>
+      <footer class="main-footer">
+    <strong>Copyright &copy; 2021-2022 <a href="#">KR Mangalam</a>.</strong>
+    All rights reserved.
+  </footer>
+  <aside class="control-sidebar control-sidebar-dark">
+  </aside>
+    </div>
+    </form>
+    <script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
+<script src="../plugins/moment/moment.min.js"></script>
+<script src="../plugins/daterangepicker/daterangepicker.js"></script>
+<script src="../plugins/summernote/summernote-bs4.min.js"></script>
+<script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="../dist/js/adminlte.js"></script>
+<script src="../dist/js/pages/dashboard.js"></script>
+</body>
+</html>
