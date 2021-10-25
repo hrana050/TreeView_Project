@@ -2,6 +2,44 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+       <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function CheckuserAvailability() {
+            //This function call on text change.             
+            $.ajax({
+                type: "POST",
+                url: 'Createuser.aspx/CheckuserAvailability', // this for calling the web method function in cs code.  
+                data: '{usercontact: "' + $("#<%=txt_contact.ClientID%>")[0].value + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccess,
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+        }
+        function OnSuccess(response) {
+            var txtvalue = $("#<%=txt_name.ClientID%>")[0].value;
+            var msg = $("#spnMsg")[0];
+            switch (response.d) {
+                case "true":
+                    msg.style.display = "block";
+                    msg.style.color = "red";
+                    msg.innerHTML = "(" + txtvalue + ")" + " username already taken";
+                    document.getElementById('<%=btn_save.ClientID %>').disabled = true;
+                     break;
+                 case "false":
+                     msg.style.display = "block";
+                     msg.style.color = "green";
+                     msg.innerHTML = "(" + txtvalue + ")" + " username Available";
+                     document.getElementById('<%=btn_save.ClientID %>').disabled = false;
+                     break;
+             }
+         }
+
+
+    </script>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -10,9 +48,9 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Master</a></li>
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Manage User</a></li>
-            <li class="breadcrumb-item active">Manage Add</li>
+            <li class="breadcrumb-item active">Add User</li>
           </ol>
         </div>
       </div>
@@ -71,6 +109,7 @@
                           <div class="col-md-5">
                              <label for="inputName">User Name</label>
                              <asp:TextBox ID="txt_name" runat="server" class="form-control" AutoComplete="off"></asp:TextBox>
+                              <span id="spnMsg"></span>
                         </div>
                  <div class="col-md-1" style="margin-top: 30px;">
                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txt_name" ErrorMessage="*" ForeColor="Red" ValidationGroup="Save"></asp:RequiredFieldValidator>
@@ -93,7 +132,7 @@
                 </div>
                     <div class="col-md-5">
                   <label for="inputName">Contact No</label>
-                   <asp:TextBox ID="txt_contact" runat="server" class="form-control" AutoComplete="off"></asp:TextBox>
+                   <asp:TextBox ID="txt_contact" runat="server" class="form-control" AutoComplete="off" onchange="CheckuserAvailability()"></asp:TextBox>
                         </div>
                          <div class="col-md-1" style="margin-top: 30px;">
                           <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txt_contact" ErrorMessage="*" ForeColor="Red" ValidationGroup="Save"></asp:RequiredFieldValidator>

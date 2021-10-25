@@ -5,10 +5,12 @@
     <script type="text/javascript">
 
         function somefun(value) {
+            var sno = '<%= Session["LoginID"].ToString() %>';
+        //    alert(sno);
             $.ajax({
                 type: "POST",
-                url: "UploadedFile.aspx/GetCurrentTime",
-                data: '{name: "' + value + '" }',
+                url: "UploadedFile.aspx/Getdata",
+                data: '{name: "' + value + '",id:"' + sno + '" }',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -39,13 +41,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>File Tree View</h1>
+          <h1>File View</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Master</a></li>
-            <li class="breadcrumb-item"><a href="#">Manage File View</a></li>
-            <li class="breadcrumb-item active">File View</li>
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Manage Level</a></li>
+            <li class="breadcrumb-item active">Add File View</li>
           </ol>
         </div>
       </div>
@@ -83,7 +85,7 @@
               </div>
             
               <div class="card-header">
-                <h3 class="card-title">File Tree View</h3>
+                <h3 class="card-title">File View</h3>
                 <div class="card-tools">
                 
                 </div>

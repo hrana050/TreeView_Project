@@ -114,31 +114,18 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
         }
     }
     [System.Web.Services.WebMethod]
-    public static string GetCurrentTime(string name)
+    public static string Getdata(string name,string id)
     {
-        //SqlConnection con = new SqlConnection(constr);
-        //cmd = new SqlCommand("ManageLevel", con);
-        //cmd.CommandType = CommandType.StoredProcedure;
-        //cmd.Parameters.AddWithValue("@LevelID", e.CommandArgument);
-        //cmd.Parameters.AddWithValue("@LevelName", txt_Lname.Text);
-        //cmd.Parameters.AddWithValue("@Levelvalue", ddl_levelvalue.SelectedValue);
-        //cmd.Parameters.AddWithValue("@Leveltitle", txt_title.Text);
-        //cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
-        //cmd.Parameters.AddWithValue("@Type", "GetRecords");
-        //con.Open();
-        //DataTable dt = new DataTable();
-        //da = new SqlDataAdapter(cmd);
-        //da.Fill(dt);
-        //con.Close();
-        //txt_Lname.Text = dt.Rows[0]["LevelName"].ToString();
-
+       
         string constr = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
-            using (SqlCommand cmd = new SqlCommand())
+            using (SqlCommand cmd = new SqlCommand("getmapingfile", con))
             {
-
-                cmd.CommandText = "select lm.LevelName,file_names,filepath from Uploadedfile uf inner join LevelMaster lm on lm.LevelID=uf.levelid where uf.levelid='" + name + "'";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@levelid", name);
+                cmd.Parameters.AddWithValue("@userud", id);
+               // cmd.CommandText = "select lm.LevelName,file_names,filepath from Uploadedfile uf inner join LevelMaster lm on lm.LevelID=uf.levelid inner join userlinkmaster ul on ul.fileid=uf.fileid where uf.levelid='" + name + "'and ul.userid='" + id + "'";
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
@@ -148,7 +135,6 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
                 }
             }
         }
-        //return "Hello " + name + Environment.NewLine + "The Current Time is: "
-        //    + DateTime.Now.ToString();
+       
     }
 }

@@ -77,7 +77,7 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="forgotpassword.aspx">I forgot my password</a>
       </p>
 
     </div>

@@ -34,7 +34,7 @@ public partial class Setup_Usermap : System.Web.UI.Page
                 hash = (Hashtable)Session["User"];
                 if (!IsPostBack)
                 {
-                   // Bindgrid();
+                    Bindgrid();
                     userlist();
                     filelist();
                 }
@@ -62,31 +62,30 @@ public partial class Setup_Usermap : System.Web.UI.Page
     }
 
 
-    //public void Bindgrid()
-    //{
-    //    try
-    //    {
-    //        SqlConnection con = new SqlConnection(constr);
-    //        cmd = new SqlCommand("ManageLevel", con);
-    //        cmd.CommandType = CommandType.StoredProcedure;
-    //        cmd.Parameters.AddWithValue("@LevelName", null);
-    //        cmd.Parameters.AddWithValue("@User", null);
-    //        cmd.Parameters.AddWithValue("@Type", "GetRecords");
-    //        con.Open();
-    //        DataTable dt = new DataTable();
-    //        da = new SqlDataAdapter(cmd);
-    //        da.Fill(dt);
-    //        con.Close();
-    //        grdrecord.DataSource = dt;
-    //        grdrecord.DataBind();
+    public void Bindgrid()
+    {
+        try
+        {
+            SqlConnection con = new SqlConnection(constr);
+            cmd = new SqlCommand("Manageuserslinkfile", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@User", null);
+            cmd.Parameters.AddWithValue("@Type", "Getrecord");
+            con.Open();
+            DataTable dt = new DataTable();
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            con.Close();
+            grdrecord.DataSource = dt;
+            grdrecord.DataBind();
 
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('" + ex.Message + "');", true);
-    //    }
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('" + ex.Message + "');", true);
+        }
 
-    //}
+    }
 
     public void Clear()
     {
@@ -111,22 +110,21 @@ public partial class Setup_Usermap : System.Web.UI.Page
             hash = new Hashtable();
             hash = (Hashtable)Session["User"];
             SqlConnection con = new SqlConnection(constr);
-            cmd = new SqlCommand("ManageLevel", con);
+            cmd = new SqlCommand("Manageuserslinkfile", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@LevelName", ddl_file.SelectedValue);
-            cmd.Parameters.AddWithValue("@Levelvalue", ddl_assign.SelectedValue);
-            cmd.Parameters.AddWithValue("@Leveltitle", ddl_user.Text);
-
+            cmd.Parameters.AddWithValue("@userid", ddl_user.SelectedValue);
+            cmd.Parameters.AddWithValue("@fileid", ddl_file.SelectedValue);
+            cmd.Parameters.AddWithValue("@assignid", ddl_assign.Text);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
 
-            if (ViewState["LevelID"] == null)
+            if (ViewState["mapid"] == null)
             {
-                cmd.Parameters.AddWithValue("@LevelID", 0);
+                cmd.Parameters.AddWithValue("@linkid", 0);
                 cmd.Parameters.AddWithValue("@Type", "Save");
             }
             else
             {
-                cmd.Parameters.AddWithValue("@LevelID", ViewState["LevelID"]);
+                cmd.Parameters.AddWithValue("@linkid", ViewState["mapid"]);
                 cmd.Parameters.AddWithValue("@Type", "Update");
             }
             con.Open();
@@ -135,7 +133,7 @@ public partial class Setup_Usermap : System.Web.UI.Page
             con.Close();
             if (HasRow == 1)
             {
-               // Bindgrid();
+                Bindgrid();
                 Clear();
                 successdiv.Visible = true;
                 errordiv.Visible = false;
@@ -213,18 +211,19 @@ public partial class Setup_Usermap : System.Web.UI.Page
             if (e.CommandName == "lnkEdit")
             {
                 SqlConnection con = new SqlConnection(constr);
-                cmd = new SqlCommand("ManageLevel", con);
+                cmd = new SqlCommand("Manageuserslinkfile", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@LevelID", e.CommandArgument);
-                cmd.Parameters.AddWithValue("@Type", "GetRecords");
+                cmd.Parameters.AddWithValue("@linkid", e.CommandArgument);
+                cmd.Parameters.AddWithValue("@Type", "Getrecord");
                 con.Open();
                 DataTable dt = new DataTable();
                 da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
                 con.Close();
-                ddl_user.SelectedValue = dt.Rows[0]["LevelName"].ToString();
-                ddl_user.SelectedValue = dt.Rows[0]["LevelName"].ToString();
-                ViewState["LevelID"] = e.CommandArgument;
+                ddl_user.SelectedValue = dt.Rows[0]["userid"].ToString();
+                ddl_file.SelectedValue = dt.Rows[0]["fileid"].ToString();
+                ddl_assign.SelectedValue = dt.Rows[0]["visible"].ToString();
+                ViewState["mapid"] = e.CommandArgument;
                 btn_save.Text = "Update";
             }
         }
@@ -239,7 +238,7 @@ public partial class Setup_Usermap : System.Web.UI.Page
         try
         {
             Clear();
-           // Bindgrid();
+            Bindgrid();
 
         }
         catch (Exception ex)
@@ -253,7 +252,7 @@ public partial class Setup_Usermap : System.Web.UI.Page
     }
     protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-      //  grdrecord.PageIndex = e.NewPageIndex;
-      //  this.Bindgrid();
+        grdrecord.PageIndex = e.NewPageIndex;
+        this.Bindgrid();
     }
 }

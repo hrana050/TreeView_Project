@@ -2,6 +2,70 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+       <style>
+        .success {
+            background-color: #5cb85c;
+            font-size: 12px;
+            color: #ffffff;
+            padding: 3px 6px 3px 6px;
+        }
+
+        .failure {
+            background-color: #ed4e2a;
+            font-size: 12px;
+            color: #ffffff;
+            padding: 3px 6px 3px 6px;
+        }
+    </style>
+     <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function handleSpace(event) {
+            //handling ie and other browser keycode 
+            var keyPressed = event.which || event.keyCode;
+
+            //Handling whitespace
+            //keycode of space is 32
+            if (keyPressed == 32) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
+        function ChecklevelAvailability() {
+         
+            $.ajax({
+                type: "POST",
+                url: 'level.aspx/ChecklevelAvailability', // this for calling the web method function in cs code.  
+                data: '{levelname: "' + $("#<%=txt_Lname.ClientID%>")[0].value + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccess,
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+        }
+        function OnSuccess(response) {
+            var txtvalue = $("#<%=txt_Lname.ClientID%>")[0].value;
+            var msg = $("#spnMsg")[0];
+             switch (response.d) {
+                 case "true":
+                     msg.style.display = "block";
+                     msg.style.color = "red";
+                     msg.innerHTML = "(" + txtvalue + ")" + " Level already taken";
+                     document.getElementById('<%=btn_save.ClientID %>').disabled = true;
+                     break;
+                 case "false":
+                     msg.style.display = "block";
+                     msg.style.color = "green";
+                     msg.innerHTML = "(" + txtvalue + ")" + " Level Available";
+                     document.getElementById('<%=btn_save.ClientID %>').disabled = false;
+                     break;
+             }
+         }
+
+    
+    </script>
+
       <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
@@ -11,9 +75,9 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Master</a></li>
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Manage Level</a></li>
-            <li class="breadcrumb-item active">Level Add</li>
+            <li class="breadcrumb-item active">Add Level</li>
           </ol>
         </div>
       </div>
@@ -79,7 +143,8 @@
                 </div>
                     <div class="col-md-5">
                   <label for="inputName">Level Name</label>
-                   <asp:TextBox ID="txt_Lname" runat="server" class="form-control" AutoComplete="off"></asp:TextBox>
+                   <asp:TextBox ID="txt_Lname" runat="server" class="form-control" AutoComplete="off" onchange="ChecklevelAvailability()" onkeypress="handleSpace(event)"></asp:TextBox>
+                        <span id="spnMsg"></span>
                         </div>
                          <div class="col-md-1" style="margin-top: 30px;">
                           <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txt_Lname" ErrorMessage="*" ForeColor="Red" ValidationGroup="Save"></asp:RequiredFieldValidator>

@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Web.Script.Serialization;
 using System.IO;
 using System.Drawing;
+using System.Web.Services;
 
 public partial class Setup_level : System.Web.UI.Page
 {
@@ -49,17 +50,6 @@ public partial class Setup_level : System.Web.UI.Page
         }
 
     }
-
-    public enum MenuType
-    {
-        All = 0,
-        SetUp = 1,
-        ImportData = 2,
-        Actions = 3,
-        Reports = 4
-    }
-
-
     public void Bindgrid()
     {
         try
@@ -234,5 +224,27 @@ public partial class Setup_level : System.Web.UI.Page
     {
         grdrecord.PageIndex = e.NewPageIndex;
         this.Bindgrid();
+    }
+
+    [WebMethod]
+    public static string  ChecklevelAvailability(string levelname)
+    {
+        string retval = "";
+        string conString = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
+         SqlConnection conn = new SqlConnection(conString);
+         SqlCommand cmd = new SqlCommand("ChecklevelAvailability", conn);
+         cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@levelname", levelname);
+                conn.Open();
+                int HasRow = (int)cmd.ExecuteScalar();
+                if (HasRow>0)
+                {
+                    retval = "true";
+                }
+                else
+                {
+                    retval = "false";
+                }
+         return retval;  
     }
 }

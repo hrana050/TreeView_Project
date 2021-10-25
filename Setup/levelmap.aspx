@@ -2,6 +2,40 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <script type="text/javascript">
+        function Filevalidation() {
+            var lblFile = document.getElementById("<%=lblSelected.ClientID %>");
+        lblFile.innerHTML = "";
+        var lblError = document.getElementById("<%=lblError.ClientID %>");
+        lblError.innerHTML = "";
+        var fileUpload = document.getElementById("<%=FileUpload1.ClientID %>");
+        var allowedFiles = [".doc", ".docx", ".pdf",".xlsx",".xls"];
+        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+        if (!regex.test(fileUpload.value.toLowerCase())) {
+            lblError.innerHTML = "Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.";
+            document.getElementById('<%=btn_save.ClientID %>').disabled = true;
+            return false;
+        } else {
+            if (fileUpload.files.length > 0) {
+                for (var i = 0; i <= fileUpload.files.length - 1; i++) {
+                    var fsize = fileUpload.files.item(i).size;
+                    var file = Math.round((fsize / 1024));
+                    // The size of the file.
+                    if (file >= 10000) {
+                      //  alert("File too Big, please select a file less than 11mb");
+                        lblFile.innerHTML = "File too Big, please select a file less than 11mb";
+                        document.getElementById('<%=btn_save.ClientID %>').disabled = true;
+                    }
+                    else {
+                        document.getElementById('<%=btn_save.ClientID %>').disabled = false;
+
+                    }
+                }
+            }
+           
+        }
+    }
+</script>
       <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -10,9 +44,9 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Master</a></li>
-            <li class="breadcrumb-item"><a href="#">Manage Level Map</a></li>
-            <li class="breadcrumb-item active">Level Map</li>
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Manage Level</a></li>
+            <li class="breadcrumb-item active">Add Level Map</li>
           </ol>
         </div>
       </div>
@@ -89,9 +123,15 @@
                      <div class="row">
                      <div class="col-md-11">
                   <label for="inputName">File Upload</label>
-                         <asp:FileUpload ID="FileUpload1" runat="server"  class="form-control" />
+                         <asp:FileUpload ID="FileUpload1" runat="server"  class="form-control" accept=".pdf,.docx,.xlsx,xls" onchange="Filevalidation()"/>
+                          <asp:Label ID="lblError" runat="server" ForeColor="Red" />
+                          <hr />
+                           <asp:Label ID="lblSelected" runat="server" ForeColor="red" />
                         </div>
-                        
+                        <div class="col-md-1" style="margin-top: 30px;">
+                              <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="FileUpload1" ErrorMessage="*" ValidationGroup="Save" ForeColor="Red">
+        </asp:RequiredFieldValidator>    
+                        </div>
                   </div>
                 </div>
               

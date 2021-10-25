@@ -11,9 +11,9 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Master</a></li>
-            <li class="breadcrumb-item"><a href="#">Manage File Link</a></li>
-            <li class="breadcrumb-item active">File Link Add</li>
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Manage User</a></li>
+            <li class="breadcrumb-item active">Add File Link</li>
           </ol>
         </div>
       </div>
@@ -120,7 +120,41 @@
             <div class="card">
               <div class="card-header" style="background-color: #ffffff;">
                 <div class="card-body">
-                  
+                      <asp:GridView ID="grdrecord" runat="server" AutoGenerateColumns="false" OnRowCommand="grdrecord_RowCommand" Width="100%" class="table table-bordered table-striped">
+                            <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+                            <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                            <HeaderStyle BackColor="#ffffff" Font-Bold="True" ForeColor="Black" />
+                            <EditRowStyle BackColor="#999999" />
+                            <AlternatingRowStyle BackColor="#FFFFFF"/>
+                            <RowStyle HorizontalAlign="Center" BackColor="#f2f2f2"/>
+                            <EmptyDataRowStyle ForeColor="Red" HorizontalAlign="Center" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="S.No.">
+                                    <ItemTemplate>
+                                        <%#Container.DataItemIndex+1 %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                  <asp:BoundField HeaderText="Name" DataField="UserName" />
+                                  <asp:BoundField HeaderText="Level Name" DataField="LevelName" />
+                                <asp:BoundField HeaderText="File Name" DataField="file_names" />
+                                  <asp:TemplateField HeaderText="Uploaded File">
+                                    <ItemTemplate>
+                                        <a href="/upload/<%# Eval("filepath") %>" target="_blank">View</a> 
+                                       
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField HeaderText="Assign" DataField="visiblevalue" />
+                                <%--<asp:BoundField HeaderText="Created On" DataField="CreatedOn" />--%>
+                                <asp:TemplateField HeaderText="Action">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lnkEdit" runat="server" Text="Edit" CommandName="lnkEdit" CommandArgument='<%#Eval("linkid") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <EmptyDataTemplate>
+                                No Record Found
+                            </EmptyDataTemplate>
+                        </asp:GridView>
                   </div>
               </div>
               

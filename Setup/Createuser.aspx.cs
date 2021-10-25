@@ -8,6 +8,8 @@ using System.Data.SqlClient;
 using System.Web.Script.Serialization;
 using System.IO;
 using System.Drawing;
+using System.Web.Services;
+
 
 public partial class Setup_Createuser : System.Web.UI.Page
 {
@@ -209,5 +211,26 @@ public partial class Setup_Createuser : System.Web.UI.Page
     {
         grdrecord.PageIndex = e.NewPageIndex;
         this.Bindgrid();
+    }
+    [WebMethod]
+    public static string CheckuserAvailability(string usercontact)
+    {
+        string retval = "";
+        string conString = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand("CheckuserAvailability", conn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@contactno", usercontact);
+        conn.Open();
+        int HasRow = (int)cmd.ExecuteScalar();
+        if (HasRow > 0)
+        {
+            retval = "true";
+        }
+        else
+        {
+            retval = "false";
+        }
+        return retval;
     }
 }
