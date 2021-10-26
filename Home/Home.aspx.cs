@@ -37,6 +37,15 @@ public partial class Home_Home : System.Web.UI.Page
                 {
                     Bindgrid();
                     Bindgrid_file();
+                    if (Session["ParentID"] != null && Session["ParentID"].ToString() == "0")
+                    {
+                        admindashboard.Visible = true;
+                    }
+                    else
+                    {
+                        admindashboard.Visible = false;
+                    }
+                
                 }
 
             }

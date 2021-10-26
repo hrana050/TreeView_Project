@@ -105,6 +105,14 @@ public partial class Setup_Createuser : System.Web.UI.Page
             SqlConnection con = new SqlConnection(constr);
             cmd = new SqlCommand("Manageusers", con);
             cmd.CommandType = CommandType.StoredProcedure;
+            if (ddl_usertype.SelectedValue=="Admin")
+            {
+                cmd.Parameters.AddWithValue("@parentid","0");
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@parentid", "4");
+            }
             cmd.Parameters.AddWithValue("@username", txt_name.Text);
             cmd.Parameters.AddWithValue("@password", txt_pwd.Text);
             cmd.Parameters.AddWithValue("@emailid", txt_emaild.Text);

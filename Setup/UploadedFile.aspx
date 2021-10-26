@@ -74,7 +74,7 @@
     <!-- Main content -->
     <section class="content" style="padding-left: 15px;padding-right: 15px;">
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-7">
             <div class="card card-primary">
             
               <div class="alert alert-success alert-dismissible fade show" role="alert" runat="server" id="successdiv" visible="false">
@@ -90,7 +90,14 @@
                 
                 </div>
               </div>
-                 
+               <style>
+
+       a {
+         white-space:pre-line;
+
+        } 
+
+    </style>
               <div class="update">
                 
               <div class="card-body">
@@ -121,7 +128,7 @@
             <!-- /.card -->
           </div>
           
-          <div class="col-md-7" id="divopen" style="display:none">
+          <div class="col-md-5" id="divopen" style="display:none">
             <div class="card">
               <div class="card-header" style="background-color: #ffffff;">
                 <div class="card-body">

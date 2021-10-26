@@ -156,7 +156,7 @@
                             <asp:TextBox ID="txt_title" runat="server" class="form-control" AutoComplete="off"></asp:TextBox>
                         </div>
                          <div class="col-md-1" style="margin-top: 30px;">
-                          <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txt_title" ErrorMessage="*" ForeColor="Red" ValidationGroup="Save"></asp:RequiredFieldValidator>
+<%--                          <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txt_title" ErrorMessage="*" ForeColor="Red" ValidationGroup="Save"></asp:RequiredFieldValidator>--%>
                 </div>       
                          
                   </div>
@@ -201,7 +201,7 @@
                                 </asp:TemplateField>
                                   <asp:BoundField HeaderText="Level Title" DataField="LevelTitle" />
                               
-                                  <asp:BoundField HeaderText="Level Value" DataField="Levelvalue" />
+                               <%--   <asp:BoundField HeaderText="Level Value" DataField="Levelvalue" />--%>
                                 <asp:BoundField HeaderText="Level" DataField="Levelname" />
                               
                               <%--  <asp:BoundField HeaderText="Created By" DataField="CreatedBy" />--%>

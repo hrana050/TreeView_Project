@@ -124,6 +124,7 @@ public partial class Setup_level : System.Web.UI.Page
             if (HasRow == 1)
             {
                 Bindgrid();
+                levelname();
                 Clear();
                 successdiv.Visible = true;
                 errordiv.Visible = false;

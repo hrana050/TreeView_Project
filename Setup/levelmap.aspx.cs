@@ -14,10 +14,12 @@ using System.Collections.Generic;
 public partial class Setup_levelmap : System.Web.UI.Page
 {
     string constr = "";
+    string parentid;
     SqlConnection con;
     SqlCommand cmd;
     SqlDataAdapter da;
     Hashtable hash;
+    string sno;
     protected void page_Init()
     {
         constr = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
@@ -97,7 +99,19 @@ public partial class Setup_levelmap : System.Web.UI.Page
             SqlConnection con = new SqlConnection(constr);
             cmd = new SqlCommand("ManageLevelMap", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Type", "GetRecords");
+            if (Session["ParentID"] != null && Session["ParentID"].ToString() == "0")
+            {
+                cmd.Parameters.AddWithValue("@Type", "GetRecords_admin");
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@Type", "GetRecords");
+            }
+            if (Session["LoginID"].ToString() != null)
+            {
+                sno = Session["LoginID"].ToString();
+            }
+            cmd.Parameters.AddWithValue("@fileaccess", sno);
             con.Open();
             DataTable dt = new DataTable();
             da = new SqlDataAdapter(cmd);
@@ -131,20 +145,35 @@ public partial class Setup_levelmap : System.Web.UI.Page
 
     protected void btn_Save_Click(object sender, EventArgs e)
     {
+        
         try
         {
+       
             hash = new Hashtable();
             hash = (Hashtable)Session["User"];
+            if(Session["LoginID"] !=null)
+            {
+                 sno = Session["LoginID"].ToString();
+            }
             SqlConnection con = new SqlConnection(constr);
             cmd = new SqlCommand("ManageLevelMap", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@levelId", ddl_levelname.SelectedValue);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
-
+            cmd.Parameters.AddWithValue("@fileaccess", sno);
             if (ViewState["fileid"] == null)
             {
                 cmd.Parameters.AddWithValue("@fileid", 0);
-                cmd.Parameters.AddWithValue("@Type", "Save");
+                if (FileUpload1.HasFile)
+                {
+                    cmd.Parameters.AddWithValue("@Type", "Save");
+                  
+                }
+                else
+                {
+                    ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('Please Choose File');", true);
+                    successdiv.Visible = false;
+                }
             }
             else
             {
@@ -155,7 +184,7 @@ public partial class Setup_levelmap : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@Type", "Update");
             }
             con.Open();
-           // cmd.ExecuteNonQuery();
+
             int HasRow = (int)cmd.ExecuteScalar();
             updateimage(HasRow);
             con.Close();
@@ -165,14 +194,12 @@ public partial class Setup_levelmap : System.Web.UI.Page
                 Clear();
                 successdiv.Visible = true;
                 errordiv.Visible = false;
-                // ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('Record Saved Sucessfully.');", true);
             }
             else
             {
                 errordiv.Visible = true;
                 successdiv.Visible = false;
-                //lblerrormsg.Text = txt_Lname.Text;
-                //ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('" + txt_year.Text + " Already Exist.');", true);
+               
             }
 
         }
@@ -191,13 +218,17 @@ public partial class Setup_levelmap : System.Web.UI.Page
             string strFileType = System.IO.Path.GetExtension(OriginalfileName).ToString().ToLower();
             strFileName = (id + strFileType);
             FileUpload1.SaveAs(Server.MapPath(("~/UpLoad/" + (strFileName))));
-
+            if (Session["LoginID"] != null)
+            {
+                sno = Session["LoginID"].ToString();
+            }
             hash = new Hashtable();
             hash = (Hashtable)Session["User"];
             SqlConnection con = new SqlConnection(constr);
             cmd = new SqlCommand("ManageLevelMap", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@levelId", ddl_levelname.SelectedValue);
+            cmd.Parameters.AddWithValue("@fileaccess", sno);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
             cmd.Parameters.AddWithValue("@filename", txt_filename.Text);
             cmd.Parameters.AddWithValue("@filepath", strFileName);
@@ -206,6 +237,17 @@ public partial class Setup_levelmap : System.Web.UI.Page
             con.Open();
             cmd.ExecuteNonQuery();
             Clear();
+        }
+        else
+        {
+            if(btn_save.Text=="Save")
+            { 
+            ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('PLease select file...');", true);
+            }
+            else
+            {
+
+            }
         }
     }
     protected void grdrecord_RowCommand(object sender, GridViewCommandEventArgs e)

@@ -86,6 +86,7 @@ public partial class Login : System.Web.UI.Page
                 hash.Add("Name", dt.Rows[0]["UserName"].ToString());
                 Session["User"] = hash;
                 Session["LoginID"] = dt.Rows[0]["LoginID"].ToString();
+                Session["ParentID"] = dt.Rows[0]["ParentID"].ToString();
                 Session["LastLogin"] = dt.Rows[0]["LastLogin"].ToString();
                 Response.Redirect("Home/Home.aspx", false);
                 //}

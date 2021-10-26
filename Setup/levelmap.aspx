@@ -128,10 +128,10 @@
                           <hr />
                            <asp:Label ID="lblSelected" runat="server" ForeColor="red" />
                         </div>
-                        <div class="col-md-1" style="margin-top: 30px;">
+                       <%-- <div class="col-md-1" style="margin-top: 30px;">
                               <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="FileUpload1" ErrorMessage="*" ValidationGroup="Save" ForeColor="Red">
         </asp:RequiredFieldValidator>    
-                        </div>
+                        </div>--%>
                   </div>
                 </div>
               

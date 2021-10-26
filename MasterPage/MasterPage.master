@@ -62,7 +62,7 @@
     </ul>
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="index3.html" class="brand-link">
+    <a href="../Home/Home.aspx" class="brand-link">
       <img src="../Img/KRMULogo_w.svg" alt="Logo" class="brand-image elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">KRM</span>
     </a>
@@ -82,7 +82,7 @@
               </p>
             </a>
           </li>
-             <li class="nav-item">
+         <li class="nav-item" runat="server" id="userli">
             <a href="#" class="nav-link">
              <i class="nav-icon fas fa-user"></i>
               <p>
@@ -91,21 +91,27 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item" runat="server" id="adduserli">
                 <a href="../Setup/Createuser.aspx" class="nav-link">
                   <i class="fas fa-plus nav-icon"></i>
                   <p>Add User</p>
                 </a>
               </li>
-                <li class="nav-item">
+                <li class="nav-item" runat="server" id="addusermapli">
                 <a href="../Setup/Usermap.aspx" class="nav-link">
                   <i class="fas fa-link nav-icon"></i>
                   <p>Manage User Map</p>
                 </a>
               </li>
+                  <li class="nav-item" runat="server" id="addmakeuserli">
+                <a href="../Setup/Makeuser.aspx" class="nav-link">
+                  <i class="fas fa-pager nav-icon"></i>
+                  <p>Make User</p>
+                </a>
+              </li>
             </ul>
           </li>
-             <li class="nav-item">
+             <li class="nav-item" runat="server" id="levelli">
             <a href="#" class="nav-link">
              <i class="nav-icon fas fa-chart-line"></i>
               <p>
@@ -114,19 +120,19 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <li class="nav-item" runat="server" id="addlevelli">
                 <a href="../Setup/level.aspx" class="nav-link">
                   <i class="fas fa-plus nav-icon" aria-hidden="true"></i>
                   <p>Add Level</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" runat="server" id="addlevelmapli">
                 <a href="../Setup/levelmap.aspx" class="nav-link">
                   <i class="fas fa-link nav-icon" aria-hidden="true"></i>
                   <p>Level map</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" runat="server" id="addlevelfile">
                 <a href="../Setup/UploadedFile.aspx" class="nav-link">
                     <i class="fas fa-file nav-icon"></i>
                   <p>File Structure</p>
@@ -134,7 +140,7 @@
               </li>
             </ul>
           </li>
-         <li class="nav-item">
+         <li class="nav-item" runat="server" id="addyear">
             <a href="#" class="nav-link">
              <i class="nav-icon fas fa-cogs"></i>
               <p>
@@ -144,7 +150,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../Setup/manageyear.aspx" class="nav-link">
+                <a href="../Setup/manageyear.aspx" class="nav-link" id="aStaff_aViewEnquiry">
                   <i class="fas fa-calendar nav-icon"></i>
                   <p>Manage Year</p>
                 </a>

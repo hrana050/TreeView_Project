@@ -124,7 +124,7 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@levelid", name);
-                cmd.Parameters.AddWithValue("@userud", id);
+              //  cmd.Parameters.AddWithValue("@userud", id);
                // cmd.CommandText = "select lm.LevelName,file_names,filepath from Uploadedfile uf inner join LevelMaster lm on lm.LevelID=uf.levelid inner join userlinkmaster ul on ul.fileid=uf.fileid where uf.levelid='" + name + "'and ul.userid='" + id + "'";
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))

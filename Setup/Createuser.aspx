@@ -144,7 +144,6 @@
                          <asp:DropDownList ID="ddl_usertype" runat="server"  class="form-control">
                              <asp:ListItem Value="0" Text="Select Type">Select Type</asp:ListItem>
                              <asp:ListItem Value="Admin" Text="Admin">Admin</asp:ListItem>
-                             <asp:ListItem Value="Super Admin" Text="Super Admin">Super Admin</asp:ListItem>
                              <asp:ListItem Value="Staff" Text="Staff">Staff</asp:ListItem>
                          </asp:DropDownList>
                         </div>

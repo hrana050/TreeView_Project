@@ -95,7 +95,7 @@
         <!-- /.row -->
 
            <!-- Main row -->
-        <div class="row">
+        <div class="row" runat="server" id="admindashboard">
           <!-- Left col -->
           <div class="col-md-6">
             <!-- TABLE: LATEST ORDERS -->
