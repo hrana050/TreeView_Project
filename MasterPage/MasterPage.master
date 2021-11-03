@@ -50,6 +50,14 @@
    
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+         <li class="nav-item">
+        <asp:Label ID="lblsession" runat="server" Font-Size="16px" Font-Bold="true" ForeColor="Green"></asp:Label>
+       
+      </li>
+         <li class="nav-item" style="padding-left: 15px;">
+       
+       
+      </li>
       <!-- Navbar Search -->
       <li class="nav-item">
         <asp:Label ID="lblLastLogin" runat="server" Font-Size="15px" Font-Bold="true" ForeColor="Red"></asp:Label>
@@ -63,8 +71,8 @@
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="../Home/Home.aspx" class="brand-link">
-      <img src="../Img/KRMULogo_w.svg" alt="Logo" class="brand-image elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">KRM</span>
+      <img src="../Img/KRMULogo.png" alt="Logo" class="brand-image elevation-3" style="background-color:white">
+   <%--   <span class="brand-text font-weight-light">KRM</span>--%>
     </a>
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -178,7 +186,7 @@
   </aside>
     </div>
     </form>
-    <script src="../plugins/jquery/jquery.min.js"></script>
+   
 <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
 <script>
     $.widget.bridge('uibutton', $.ui.button)

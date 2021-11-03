@@ -2,6 +2,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+     <script src="../plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript">
         function Filevalidation() {
             var lblFile = document.getElementById("<%=lblSelected.ClientID %>");
@@ -121,18 +122,20 @@
                         
                   </div><br />
                      <div class="row">
-                     <div class="col-md-11">
+                     <div class="col-md-6">
                   <label for="inputName">File Upload</label>
                          <asp:FileUpload ID="FileUpload1" runat="server"  class="form-control" accept=".pdf,.docx,.xlsx,xls" onchange="Filevalidation()"/>
                           <asp:Label ID="lblError" runat="server" ForeColor="Red" />
                           <hr />
                            <asp:Label ID="lblSelected" runat="server" ForeColor="red" />
                         </div>
-                       <%-- <div class="col-md-1" style="margin-top: 30px;">
-                              <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="FileUpload1" ErrorMessage="*" ValidationGroup="Save" ForeColor="Red">
-        </asp:RequiredFieldValidator>    
-                        </div>--%>
-                  </div>
+                         <div class="col-md-6" style="margin-top: 35px;">
+                          <asp:RadioButtonList ID="btn_rbt" runat="server" RepeatDirection="Horizontal">
+                                   <asp:ListItem Text="Inprogress" Value="0" Selected="True">Inprogress</asp:ListItem>
+                               </asp:RadioButtonList>
+                         </div>
+                         </div>
+                    
                 </div>
               
                 <div class="row">
@@ -154,7 +157,7 @@
             <div class="card">
               <div class="card-header" style="background-color: #ffffff;">
                 <div class="card-body">
-                   <asp:GridView ID="grdrecord" runat="server" AutoGenerateColumns="false" OnRowCommand="grdrecord_RowCommand" Width="100%" class="table table-bordered table-striped">
+                   <asp:GridView ID="grdrecord" runat="server" AutoGenerateColumns="false" OnRowCommand="grdrecord_RowCommand" OnRowDeleting="grdrecord_RowDeleting" Width="100%" class="table table-bordered table-striped">
                             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
                             <HeaderStyle BackColor="#ffffff" Font-Bold="True" ForeColor="Black" />
@@ -180,9 +183,11 @@
                                 <%--<asp:BoundField HeaderText="Created On" DataField="CreatedOn" />--%>
                                 <asp:TemplateField HeaderText="Action">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="lnkEdit" runat="server" Text="Edit" CommandName="lnkEdit" CommandArgument='<%#Eval("fileid") %>' />
+                                        <asp:LinkButton ID="lnkEdit" runat="server" Text="Edit" CommandName="lnkEdit" CommandArgument='<%#Eval("fileid") %>' /> / 
+                                         <asp:LinkButton ID="lnkDelete" runat="server" Text="Delete" CommandName="delete" CommandArgument='<%#Eval("fileid") %>' OnClientClick="return confirm('Are you sure you want to delete this record?');" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                              
                             </Columns>
                             <EmptyDataTemplate>
                                 No Record Found

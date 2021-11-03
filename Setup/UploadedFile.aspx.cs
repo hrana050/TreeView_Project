@@ -31,16 +31,45 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
     {
         if (!Page.IsPostBack)
         {
-            gettreeviewdata();
+            if (Session["User"] != null)
+            {
+                bindyear();
+                string yearid;
+                if (Session["yearid"].ToString().Length > 0)
+                {
+                    yearid = Session["yearid"].ToString();
+                    gettreeviewdata(yearid);
+                }
+                else
+                {
+                    yearid = "0";
+                }
+            
+            }
+            else
+            {
+                Response.Redirect("../Login.aspx", false);
+            }
         }
     }
-    private void gettreeviewdata()
+    private void gettreeviewdata(string yearid)
     {
+        
         con = new SqlConnection(constr);
-        da = new SqlDataAdapter("getmasterlevel", con);
+        //cmd = new SqlCommand("getmasterlevel", con);
+        //cmd.CommandType = CommandType.StoredProcedure;
+        //cmd.Parameters.AddWithValue("@yearid", yearid);
+        //con.Open();
+       // DataTable dt = new DataTable();
+        //da = new SqlDataAdapter("getmasterlevel", con);
+        cmd = new SqlCommand("getmasterlevel", con);
+        cmd.Parameters.Add("@yearid", yearid);
+        cmd.CommandType = CommandType.StoredProcedure;
+        da.SelectCommand = cmd;
         ds = new DataSet();
         da.Fill(ds);
         ds.Relations.Add("ChildRows", ds.Tables[0].Columns["LevelID"], ds.Tables[0].Columns["Levelvalue"], false);
+        TreeViewProducts.Nodes.Clear();
         foreach (DataRow leveldata in ds.Tables[0].Rows)
         {
             if (leveldata["Levelvalue"].ToString() == "0")
@@ -62,6 +91,30 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
                 TreeViewProducts.Nodes.Add(parentTreeNodeobj);
                 TreeViewProducts.CollapseAll();
             }
+        }
+    }
+    public void bindyear()
+    {
+        try
+        {
+            SqlConnection con = new SqlConnection(constr);
+            cmd = new SqlCommand("ManageYears", con);
+            cmd.Parameters.AddWithValue("@User", null);
+            cmd.Parameters.AddWithValue("@Type", "GetRecords_file");
+            cmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            DataTable dt = new DataTable();
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            ddl_year.DataSource = dt;
+            ddl_year.DataTextField = "Year";
+            ddl_year.DataValueField = "Yearid";
+            ddl_year.DataBind();
+            con.Close();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('" + ex.Message + "');", true);
         }
     }
     private void GetChildRows(DataRow dr, TreeNode tn)
@@ -95,6 +148,7 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
         if (TreeViewProducts.SelectedNode.Parent == null)
         {
             int id = int.Parse(TreeViewProducts.SelectedNode.Value.ToString());
+            //Session["treesno"] = id;
             ScriptManager.RegisterStartupScript(this, typeof(string), "Passing", String.Format("somefun('{0}');", id), true);
         }
         else
@@ -125,7 +179,6 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@levelid", name);
               //  cmd.Parameters.AddWithValue("@userud", id);
-               // cmd.CommandText = "select lm.LevelName,file_names,filepath from Uploadedfile uf inner join LevelMaster lm on lm.LevelID=uf.levelid inner join userlinkmaster ul on ul.fileid=uf.fileid where uf.levelid='" + name + "'and ul.userid='" + id + "'";
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
@@ -136,5 +189,34 @@ public partial class Setup_UploadedFile : System.Web.UI.Page
             }
         }
        
+    }
+
+    [System.Web.Services.WebMethod]
+    public static string updatedata(string id,string status)
+    {
+
+        string constr = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand("updatedata", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@fileid", id);
+                cmd.Parameters.AddWithValue("@filestatus", status);
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataSet ds = new DataSet();
+                    sda.Fill(ds);
+                    return ds.GetXml();
+                }
+            }
+        }
+
+    }
+    protected void ddl_year_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string yearid = ddl_year.SelectedValue;
+        gettreeviewdata(yearid);
     }
 }

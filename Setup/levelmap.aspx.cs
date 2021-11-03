@@ -161,6 +161,7 @@ public partial class Setup_levelmap : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@levelId", ddl_levelname.SelectedValue);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
             cmd.Parameters.AddWithValue("@fileaccess", sno);
+            cmd.Parameters.AddWithValue("@filestatus", btn_rbt.SelectedValue);
             if (ViewState["fileid"] == null)
             {
                 cmd.Parameters.AddWithValue("@fileid", 0);
@@ -229,6 +230,7 @@ public partial class Setup_levelmap : System.Web.UI.Page
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@levelId", ddl_levelname.SelectedValue);
             cmd.Parameters.AddWithValue("@fileaccess", sno);
+            cmd.Parameters.AddWithValue("@filestatus", btn_rbt.SelectedValue);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
             cmd.Parameters.AddWithValue("@filename", txt_filename.Text);
             cmd.Parameters.AddWithValue("@filepath", strFileName);
@@ -274,11 +276,34 @@ public partial class Setup_levelmap : System.Web.UI.Page
                 ViewState["fileid"] = e.CommandArgument;
                 btn_save.Text = "Update";
             }
+            else if (e.CommandName == "delete")
+            {
+                SqlConnection con = new SqlConnection(constr);
+                cmd = new SqlCommand("ManageLevelMap", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@FileId", e.CommandArgument);
+                cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
+                cmd.Parameters.AddWithValue("@Type", "delete");
+                con.Open();
+                DataTable dt = new DataTable();
+                da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+                con.Close();
+                Bindgrid();
+                successdiv.Visible = false;
+                ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('Record delete Successfully..!');", true);
+
+            }
         }
         catch (Exception ex)
         {
             ScriptManager.RegisterClientScriptBlock(Page, this.GetType(), "validate", "javascript: alert('" + ex.Message + "');", true);
         }
+    }
+
+    protected void grdrecord_RowDeleting(object sender, GridViewCommandEventArgs e)
+    { 
+    
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)
@@ -298,5 +323,9 @@ public partial class Setup_levelmap : System.Web.UI.Page
     {
         /* Verifies that the control is rendered */
     }
-   
+
+    protected void grdrecord_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+
+    }
 }

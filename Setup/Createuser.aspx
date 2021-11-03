@@ -3,6 +3,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
        <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+     <script src="../plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript">
 
         function CheckuserAvailability() {

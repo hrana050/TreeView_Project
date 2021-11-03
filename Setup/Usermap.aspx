@@ -2,6 +2,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+     <script src="../plugins/jquery/jquery.min.js"></script>
           <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">

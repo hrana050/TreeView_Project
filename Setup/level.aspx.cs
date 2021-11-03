@@ -52,13 +52,23 @@ public partial class Setup_level : System.Web.UI.Page
     }
     public void Bindgrid()
     {
+        string yearid;
         try
         {
+            if (Session["yearid"].ToString().Length > 0)
+            {
+                yearid = Session["yearid"].ToString();
+            }
+            else
+            {
+                yearid = "0";
+            }
             SqlConnection con = new SqlConnection(constr);
             cmd = new SqlCommand("ManageLevel", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@LevelName", null);
             cmd.Parameters.AddWithValue("@User", null);
+            cmd.Parameters.AddWithValue("@yearid", yearid);
             cmd.Parameters.AddWithValue("@Type", "GetRecords");
             con.Open();
             DataTable dt = new DataTable();
@@ -94,8 +104,17 @@ public partial class Setup_level : System.Web.UI.Page
 
     protected void btn_Save_Click(object sender, EventArgs e)
     {
+        string yearid;
         try
         {
+            if (Session["yearid"].ToString().Length > 0)
+            {
+                yearid = Session["yearid"].ToString();
+            }
+            else
+            {
+                 yearid = "0";
+            }
             hash = new Hashtable();
             hash = (Hashtable)Session["User"];
             SqlConnection con = new SqlConnection(constr);
@@ -104,7 +123,7 @@ public partial class Setup_level : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@LevelName", txt_Lname.Text);
             cmd.Parameters.AddWithValue("@Levelvalue", ddl_levelvalue.SelectedValue);
             cmd.Parameters.AddWithValue("@Leveltitle", txt_title.Text);
-            
+            cmd.Parameters.AddWithValue("@yearid", yearid);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
 
             if (ViewState["LevelID"] == null)
@@ -152,7 +171,7 @@ public partial class Setup_level : System.Web.UI.Page
             cmd = new SqlCommand("ManageLevel", con);
             cmd.Parameters.AddWithValue("@LevelName", null);
             cmd.Parameters.AddWithValue("@User", null);
-            cmd.Parameters.AddWithValue("@Type", "GetRecords");
+            cmd.Parameters.AddWithValue("@Type", "GetRecords_year");
             cmd.CommandType = CommandType.StoredProcedure;
             con.Open();
             DataTable dt = new DataTable();
@@ -228,7 +247,7 @@ public partial class Setup_level : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string  ChecklevelAvailability(string levelname)
+    public static string  ChecklevelAvailability(string levelname,string id)
     {
         string retval = "";
         string conString = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
@@ -236,6 +255,7 @@ public partial class Setup_level : System.Web.UI.Page
          SqlCommand cmd = new SqlCommand("ChecklevelAvailability", conn);
          cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@levelname", levelname);
+                cmd.Parameters.AddWithValue("@yearid", id);
                 conn.Open();
                 int HasRow = (int)cmd.ExecuteScalar();
                 if (HasRow>0)

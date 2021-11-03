@@ -19,6 +19,7 @@ public partial class MasterPage_MasterPage : System.Web.UI.MasterPage
     SqlCommand cmd;
     SqlDataAdapter da;
     Hashtable hash;
+   
 
     protected void page_Init()
     {
@@ -47,8 +48,16 @@ public partial class MasterPage_MasterPage : System.Web.UI.MasterPage
                     {
                         lblLastLogin.Text = string.Empty;
                     }
-
+                   
                     ToggleDisplayPages();
+                    if (Session["yearsession"].ToString().Length > 0)
+                    {
+                        lblsession.Text = "Your Current Year - "+ Session["yearsession"].ToString();
+                    }
+                    else
+                    {
+                        lblsession.Text = string.Empty;
+                    }
                 }
             }
             else
@@ -105,7 +114,11 @@ public partial class MasterPage_MasterPage : System.Web.UI.MasterPage
             da = new SqlDataAdapter(cmd);
             da.Fill(ds);
             con.Close();
-
+            if (ds.Tables[2].Rows.Count > 0)
+            {
+                Session["yearsession"] = ds.Tables[2].Rows[0]["Year"].ToString();
+                Session["yearid"] = ds.Tables[2].Rows[0]["YearID"].ToString();
+            }
             if (ds.Tables[1].Rows.Count > 0)
             {
                 foreach (DataRow row in ds.Tables[1].Rows)

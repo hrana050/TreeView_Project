@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/MasterPage.master" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="Home_Home" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+     <script src="../plugins/jquery/jquery.min.js"></script>
           <!-- Content Wrapper. Contains page content -->
 
     <!-- Content Header (Page header) -->
@@ -72,7 +73,7 @@
               <div class="icon">
                 <i class="ion ion-filing"></i>
               </div>
-              <a href="#" class="small-box-footer">  <span>Active -   <asp:Label ID="lblactivefile" runat="server"></asp:Label></span> <span>Deactive - <asp:Label ID="lbldeactivefile" runat="server"></asp:Label></span></a>
+              <a href="#" class="small-box-footer">  <span>Complete -   <asp:Label ID="lblactivefile" runat="server"></asp:Label></span> <span>In-Progress - <asp:Label ID="lbldeactivefile" runat="server"></asp:Label></span></a>
             </div>
           </div>
           <!-- ./col -->

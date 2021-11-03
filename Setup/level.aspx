@@ -18,6 +18,7 @@
         }
     </style>
      <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+     <script src="../plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript">
         function handleSpace(event) {
             //handling ie and other browser keycode 
@@ -31,11 +32,11 @@
             }
         }
         function ChecklevelAvailability() {
-         
+            var sno = '<%= Session["yearid"].ToString() %>';
             $.ajax({
                 type: "POST",
                 url: 'level.aspx/ChecklevelAvailability', // this for calling the web method function in cs code.  
-                data: '{levelname: "' + $("#<%=txt_Lname.ClientID%>")[0].value + '" }',
+                data: '{levelname: "' + $("#<%=txt_Lname.ClientID%>")[0].value + '",id:"' + sno + '" }',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: OnSuccess,

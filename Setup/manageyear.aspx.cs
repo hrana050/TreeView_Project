@@ -109,6 +109,7 @@ public partial class Setup_manageyear : System.Web.UI.Page
             cmd = new SqlCommand("ManageYears", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Year", txt_year.Text);
+            cmd.Parameters.AddWithValue("@status", ddl_status.SelectedValue);
             cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
 
             if (ViewState["YearID"] == null)
@@ -159,6 +160,7 @@ public partial class Setup_manageyear : System.Web.UI.Page
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@YearID", e.CommandArgument);
                 cmd.Parameters.AddWithValue("@Year", txt_year.Text);
+                cmd.Parameters.AddWithValue("@status", ddl_status.SelectedValue);
                 cmd.Parameters.AddWithValue("@User", Convert.ToString(hash["Name"].ToString()));
                 cmd.Parameters.AddWithValue("@Type", "GetRecords");
                 con.Open();
@@ -167,6 +169,15 @@ public partial class Setup_manageyear : System.Web.UI.Page
                 da.Fill(dt);
                 con.Close();
                 txt_year.Text = dt.Rows[0]["Year"].ToString();
+                if (Convert.ToBoolean(dt.Rows[0]["IsActive"].ToString())==false)
+                {
+                    ddl_status.SelectedValue = "0";
+                }
+                else
+                {
+                     ddl_status.SelectedValue="1";
+                }
+              
                 ViewState["YearID"] = e.CommandArgument;
                 btn_save.Text = "Update";
             }

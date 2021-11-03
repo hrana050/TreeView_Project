@@ -2,6 +2,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+     <script src="../plugins/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -77,21 +78,28 @@
                                                 FilterMode="ValidChars" ValidChars="0123456789">
                                             </asp:FilteredTextBoxExtender>
                         </div>
-                         <div class="col-md-2" style="margin-top: 30px;">
+                         <div class="col-md-1" style="margin-top: 30px;">
                           <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txt_year" ErrorMessage="*" ForeColor="Red" ValidationGroup="Save"></asp:RequiredFieldValidator>
                 </div>
-                           <div class="col-md-5" id="Divhide" style="margin-top: 30px;">
+                         <div class="col-md-5">
+                  <label for="inputName">Assign</label>
+                           <asp:DropDownList ID="ddl_status" runat="server" class="form-control">
+                               <asp:ListItem Value="1" Text="Active">Active</asp:ListItem>
+                               <asp:ListItem Value="0" Text="Inactive">Inactive</asp:ListItem>
+                  </asp:DropDownList>
+                        </div>
+                            
+                  </div>
+                  <div class="row">
+                           <div class="col-md-12" id="Divhide" style="margin-top: 30px;">
                           <asp:Button ID="btnCancel" Text="Cancel" runat="server" class="btn btn-secondary float-right" OnClick="btnCancel_Click" />
 
                         <asp:Button ID="btn_save" runat="server" Text="Save" ValidationGroup="Save" class="btn btn-success float-right" style="margin-right: 15px;" OnClick="btn_Save_Click"/>
                     </div>
-                  </div>
-                  
+                                </div>
                 </div>
               
-                <div class="row">
-                   
-                  </div>
+              
               </div>
               </div>
            
@@ -120,6 +128,7 @@
                                 <asp:BoundField HeaderText="Year" DataField="Year" />
                                 <asp:BoundField HeaderText="Created By" DataField="CreatedBy" />
                                 <asp:BoundField HeaderText="Created On" DataField="CreatedOn" />
+                                 <asp:BoundField HeaderText="Status" DataField="yearstatus" />
                               <%--  <asp:BoundField HeaderText="Updated By" DataField="UpdatedBy" />
                                 <asp:BoundField HeaderText="Updated On" DataField="UpdatedOn" />--%>
                                 <asp:TemplateField HeaderText="Action">
